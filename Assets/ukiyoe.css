@@ -1,0 +1,394 @@
+/* ─────────────────────────────────────────────────────────────
+   浮世繪版 — 疊在 style.css 之後，只改外觀不動內容
+   和紙底 ＋ 墨 ＋ 朱 ＋ 普魯士藍（ベロ藍）＋ 黃土
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --paper:    #efe4cc;               /* 生成り和紙 */
+  --card:     #f6efdd;               /* 卡片：較亮的紙 */
+
+  --headline: #22201c;               /* 墨 */
+  --text:     #3d3730;
+  --muted:    rgba(61, 55, 48, .7);
+
+  --accent:   #c1392b;               /* 朱 */
+  --soft:     #8a8172;               /* 鼠色：細線與外框 */
+  --mint:     #24456b;               /* 普魯士藍，取代第三色 */
+  --ochre:    #c99a3b;               /* 黃土 */
+
+  --line:     rgba(34, 32, 28, .55);
+  --line-dim: rgba(34, 32, 28, .14);
+
+  --serif: "Hiragino Mincho ProN", "Yu Mincho", "Songti TC", "Noto Serif TC",
+           "Noto Serif JP", serif;
+  --sans:  "Hiragino Mincho ProN", "Yu Mincho", "Songti TC", serif;
+}
+
+/* 和紙纖維：用 SVG 雜訊疊一層很淡的紋理 */
+body {
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .26 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23f)'/%3E%3C/svg%3E");
+  letter-spacing: .03em;
+}
+
+::selection { background: var(--accent); color: var(--card); }
+
+code { background: rgba(201, 154, 59, .25); }
+
+/* ── 頁首：紙底，下緣一條青海波 ─────────────────────────────── */
+.site-header {
+  background: rgba(239, 228, 204, .94);
+  border-bottom: 0;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  height: 10px;
+  background: url("Ukiyoe/seigaiha-indigo.svg") 0 0 / 40px 20px;
+  border-top: 2px solid var(--headline);
+}
+
+/* 品牌名前面蓋一枚朱印 */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  letter-spacing: .18em;
+}
+
+.brand::before {
+  content: "嘎拉";
+  writing-mode: vertical-rl;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 38px;
+  font-size: 13px;
+  letter-spacing: .05em;
+  line-height: 1;
+  color: var(--card);
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 3px rgba(246, 239, 221, .7);
+}
+
+.nav { font-size: 13px; letter-spacing: .14em; text-transform: none; color: var(--text); }
+.nav a { border-bottom-width: 2px; }
+
+/* ── 區塊共用 ──────────────────────────────────────────────── */
+.section {
+  position: relative;
+  border-bottom: 0;
+}
+
+/* 區塊之間用一條細細的青海波帶隔開 */
+.section + .section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  height: 12px;
+  background: url("Ukiyoe/seigaiha-indigo.svg") 0 0 / 48px 24px;
+  border-top: 2px solid var(--headline);
+  border-bottom: 2px solid var(--headline);
+  opacity: .9;
+}
+
+/* 01–06 換成大寫數字，蓋在朱色方印裡 */
+.eyebrow { font-size: 13px; letter-spacing: .3em; color: var(--text); }
+.eyebrow::after { height: 2px; background: var(--headline); }
+
+.eyebrow .num {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-size: 0;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4px rgba(246, 239, 221, .75);
+}
+
+.eyebrow .num::after {
+  font-size: 17px;
+  letter-spacing: 0;
+  color: var(--card);
+}
+
+#profile      .num::after { content: "壹"; }
+#podcast      .num::after { content: "貳"; }
+#articles     .num::after { content: "參"; }
+#illustration .num::after { content: "肆"; }
+#sns          .num::after { content: "伍"; }
+#rates        .num::after { content: "陸"; }
+
+/* 區塊大標放進「題簽」框：黃土底、墨色雙框，像版畫角落的標題籤 */
+.section-title {
+  display: inline-block;
+  padding: 10px 26px 12px;
+  font-weight: 600;
+  background: #f1dfa6;
+  border: 2px solid var(--headline);
+  box-shadow: 0 0 0 4px #f1dfa6, 0 0 0 6px var(--headline), 7px 7px 0 6px rgba(36, 69, 107, .85);
+  margin: 6px 0 22px 6px;
+}
+
+/* ── 01 Profile：丸窓大頭照 ＋ 背後的大浪 ─────────────────── */
+.profile {
+  overflow: hidden;
+  padding-bottom: 330px;   /* 大浪整個放在下方留白裡，不壓到文字 */
+}
+
+.profile::after {
+  content: "";
+  position: absolute;
+  right: var(--gutter);
+  bottom: 12px;
+  width: min(620px, calc(100% - var(--gutter) * 2));
+  aspect-ratio: 2 / 1;
+  background: url("Ukiyoe/wave.svg") right bottom / contain no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.profile-grid { position: relative; z-index: 1; }
+
+/* 朝日：浪頭左上方一顆朱紅太陽 */
+.profile::before {
+  content: "";
+  position: absolute;
+  right: calc(var(--gutter) + 430px);
+  bottom: 190px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: .92;
+  z-index: 0;
+}
+
+.profile-text h1 { font-weight: 700; letter-spacing: .08em; }
+.profile-text .lead { font-size: 15px; letter-spacing: .3em; font-weight: 600; }
+
+.portrait img {
+  border-radius: 50%;
+  border: 3px solid var(--headline);
+  box-shadow: 0 0 0 10px var(--card), 0 0 0 13px var(--headline), 0 0 0 26px var(--mint);
+  margin: 26px auto;
+}
+
+.portrait figcaption { margin-top: 34px; font-size: 13px; letter-spacing: .3em; color: var(--text); }
+
+.channel-card {
+  border: 2px solid var(--headline);
+  border-radius: 0;
+  background: var(--card);
+  box-shadow: 6px 6px 0 var(--mint);
+}
+
+.channel-label { background: var(--accent); color: var(--card); font-size: 12px; font-weight: 600; }
+.channel-name { font-weight: 700; }
+.channel-meta li { background: var(--card); box-shadow: inset 0 0 0 1px var(--headline); }
+
+/* ── 按鈕：藍底，滑過變朱 ─────────────────────────────────── */
+.btn {
+  background: var(--mint);
+  border-color: var(--mint);
+  color: var(--card);
+  border-radius: 0;
+  letter-spacing: .14em;
+  text-transform: none;
+  box-shadow: 3px 3px 0 var(--headline);
+  transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--card);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--headline);
+}
+
+.btn.btn-ghost { background: var(--card); color: var(--mint); border-color: var(--mint); }
+.btn.btn-ghost:hover { background: var(--accent); border-color: var(--accent); color: var(--card); }
+
+/* ── 卡片共通：墨線外框 ＋ 版畫錯版般的藍色實心影子 ─────────── */
+.episode,
+.article,
+.print-feature,
+.gallery .card,
+.shop-item,
+.ig-card,
+.th-post,
+.rate {
+  border: 2px solid var(--headline);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 rgba(36, 69, 107, .82);
+}
+
+.episode { border-left: 6px solid var(--headline); }
+.episode:hover { border-color: var(--accent); }
+
+.episode.playing {
+  border-color: var(--accent);
+  background: url("Ukiyoe/seigaiha-paper.svg") 0 0 / 40px 20px, var(--card);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+
+.ep-art { border: 2px solid var(--headline); border-radius: 0; }
+.ep-no { font-weight: 700; }
+.ep-play { border: 2px solid var(--headline); background: var(--card); color: var(--headline); }
+.ep-play:hover, .episode.playing .ep-play { background: var(--accent); border-color: var(--accent); color: var(--card); }
+
+.ep-seek { accent-color: var(--accent); }
+.ep-seek::-webkit-slider-thumb { background: var(--accent); border-color: var(--headline); }
+.ep-seek::-moz-range-thumb { background: var(--accent); border-color: var(--headline); }
+
+.article:hover,
+.shop-item:hover,
+.th-post:hover {
+  border-color: var(--headline);
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--accent);
+}
+
+.art-cover { border-bottom: 2px solid var(--headline); }
+.art-title { font-weight: 700; }
+
+/* 文章來源標籤：改成各色「短冊」 */
+.art-source { border-radius: 0; font-weight: 600; color: var(--card); }
+.art-source.src-vocus { background: var(--accent); }
+.art-source.src-hype  { background: var(--ochre); color: var(--headline); }
+.art-source.src-tnl   { background: var(--mint); }
+.art-source.src-film  { background: var(--mint); }
+.art-source.src-crown { background: var(--headline); color: var(--card); }
+.art-source.src-ccc   { background: var(--card); color: var(--headline); box-shadow: inset 0 0 0 2px var(--headline); }
+
+.print-cover { border: 2px solid var(--headline); }
+.print-title { font-weight: 700; }
+
+/* ── 04 插畫：掛軸感，上下各一條藍緞 ─────────────────────── */
+.gallery .card {
+  padding: 10px 10px 0;
+  background: var(--card);
+  border-top: 12px solid var(--mint);
+  border-bottom: 12px solid var(--mint);
+}
+
+.gallery .card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--accent);
+}
+
+.gallery .card img { border: 1px solid var(--headline); }
+.card-title { font-weight: 700; }
+
+.shop-item img { border-radius: 0; }
+
+/* ── 05 SNS ────────────────────────────────────────────────── */
+.sns-handle { font-weight: 700; border-bottom-width: 2px; }
+
+.ig-card { border-left: 6px solid var(--accent); background: var(--card); }
+.th .ig-card { border-left-color: var(--mint); }
+.ig-avatar img { border: 2px solid var(--headline); }
+.ig-reel { background: var(--accent); color: var(--card); }
+.ig-post { border: 2px solid var(--headline); border-radius: 0; }
+.th-topic { background: var(--mint); color: var(--card); }
+
+/* ── 06 Rates：每張價目牌上緣一條色帶 ─────────────────────── */
+.rate { border-top-width: 10px; background: var(--card); }
+.rate-podcast { border-top-color: var(--accent); }
+.rate-ig      { border-top-color: var(--mint); }
+.rate-text    { border-top-color: var(--ochre); }
+.rate-name { font-weight: 700; }
+.rate-price { font-weight: 700; color: var(--accent); }
+
+.contact-box {
+  border: 2px solid var(--headline);
+  border-radius: 0;
+  background: var(--card);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+
+.contact-box:hover { background: #f1dfa6; transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--accent); }
+
+/* ── 頁尾：整片青海波 ───────────────────────────────────────── */
+.site-footer {
+  position: relative;
+  color: var(--card);
+  background: url("Ukiyoe/seigaiha-indigo.svg") 0 0 / 56px 28px;
+  border-top: 3px solid var(--headline);
+}
+
+.site-footer > * {
+  position: relative;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4px 18px;
+  background: var(--mint);
+}
+
+.foot-brand { color: var(--card); font-weight: 700; }
+.site-footer a { border-bottom-color: rgba(246, 239, 221, .5); }
+.site-footer a:hover { color: #f1dfa6; border-bottom-color: #f1dfa6; }
+
+/* ── 燈箱：深藍夜 ───────────────────────────────────────────── */
+.lightbox { background: rgba(18, 32, 50, .95); }
+.lb-figure img { border: 6px solid var(--card); }
+.lb-figure figcaption { color: var(--card); }
+.lb-nav, .lb-close { border-radius: 0; border-color: var(--card); color: var(--card); }
+.lb-nav:hover, .lb-close:hover { background: var(--accent); border-color: var(--accent); }
+
+/* ── 飄落的櫻花瓣（ukiyoe.js 產生） ─────────────────────────── */
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 30;
+}
+
+.petal {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 10px;
+  background: #f2b8c0;
+  border-radius: 12px 0 12px 0;
+  opacity: .85;
+  animation: petal-fall linear infinite;
+}
+
+@keyframes petal-fall {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(var(--sway), 52vh) rotate(200deg); }
+  100% { transform: translate(0, 106vh) rotate(400deg); }
+}
+
+/* ── 窄螢幕 ────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .profile { padding-bottom: 300px; }
+  .portrait { margin: 0 auto; }
+
+}
+
+@media (max-width: 640px) {
+  .brand::before { width: 24px; height: 30px; font-size: 11px; }
+  .nav { font-size: 12px; }
+  .site-header::after { background: linear-gradient(to right, rgba(239, 228, 204, 0), rgba(239, 228, 204, .95)); }
+  .section-title { padding: 8px 16px 10px; }
+  .profile { padding-bottom: 200px; }
+  .profile::before { width: 64px; height: 64px; right: auto; left: 12%; bottom: 120px; }
+  .portrait img { box-shadow: 0 0 0 7px var(--card), 0 0 0 10px var(--headline), 0 0 0 20px var(--mint); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petals { display: none; }
+}
